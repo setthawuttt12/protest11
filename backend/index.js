@@ -16,6 +16,9 @@ app.use(fileUp())
 app.use(express.json())
 app.use('/uploads',express.static(path.join(__dirname,'./uploads')))
 
+const auth = require('./routes/auth')
+app.use('/api/auth',auth)
+
 app.use((req,res)=> res.status(404).json({message:'route not found'}))
 app.listen(3001,()=>{
     console.log("Server running on Port 3001");

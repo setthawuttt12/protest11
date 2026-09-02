@@ -9,8 +9,8 @@ router.post('/save',verifyToken,requireRole('ฝ่ายบุคลากร')
         
         const {fname,lname,email,username,password,role} = req.body
         
-        const hash = await bc.hash(form.password,10)
-        const [rows] = await db.query(`insert into tb_member(fname,lname,email,username,password,role) values(?,?,?,?,?)`,[fname,lname,email,username,hash,role])
+        const hash = await bc.hash(password,10)
+        const [rows] = await db.query(`insert into tb_member(fname,lname,email,username,password,role) values(?,?,?,?,?,?)`,[fname,lname,email,username,hash,role])
         res.json(rows,{message:"Save Success"})
     } catch (error) {
         console.error("Error save",error);
@@ -26,7 +26,7 @@ router.put('/update/:id_member',verifyToken,requireRole('ฝ่ายบุค�
         const {fname,lname,email,username,password,role} = req.body
 
         if(password && password.trim()){
-            const hash = await bc.hash(form.password,10)
+            const hash = await bc.hash(password,10)
             const [rows] = await db.query(`update tb_member set fname=?,lname=?,email=?,username=?,password=?,role=? where id_member = ?`,[fname,lname,email,username,hash,role,id_member])
             res.json(rows,{message:"update Success"})
         }else{

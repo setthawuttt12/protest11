@@ -10,11 +10,11 @@
         </v-app-bar>
 
         <Client-Only>
-            <v-navigation-drawer app width="260" v-model="drawer" :temporary="isMobile" :permanent="!isMobile">
+            <v-navigation-drawer app width="260" v-model="drawer" color="#404040" :temporary="isMobile" :permanent="!isMobile">
                 <v-list density="comfortable">
-                    <v-list-title v-for="item in navitem" :key="item.title" :to="item.to">
+                    <v-list-item v-for="item in navitem" :key="item.title" :to="item.to">
                         {{ item.title }}
-                    </v-list-title>
+                    </v-list-item>
                 </v-list>
             </v-navigation-drawer>
         </Client-Only>
@@ -45,7 +45,7 @@ const logout = ()=>{
     navigateTo('/',{replace:true})
 }
 
-const navitem = computed(()=> roles.filter((item)=> item.role?.includes(user.value.role)))
+const navitem = computed(()=> roles.filter((item)=> item.role.includes(user.value.role)))
 const roles =[
     {title:'หน้าหลัก',to:'/Staff',role:'ฝ่ายบุคลากร'},
     {title:'จัดการผู้รับการประเมินผล',to:'/Staff/Manage_eva',role:'ฝ่ายบุคลากร'},

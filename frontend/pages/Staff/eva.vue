@@ -166,7 +166,7 @@ const go = async(id_eva:number)=>{
     navigateTo({path:`/Staff/commit-eva-${id_eva}`})
 
 }
-
+onMounted(fetch)
 </script>
 
 <style scoped>

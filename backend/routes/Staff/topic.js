@@ -9,7 +9,6 @@ router.post('/save',verifyToken,requireRole('ฝ่ายบุคลากร')
         
         const {name_topic} = req.body
         
-        const hash = await bc.hash(password,10)
         const [rows] = await db.query(`insert into tb_topic(name_topic) values(?)`,[name_topic])
         res.json(rows,{message:"Save Success"})
     } catch (error) {

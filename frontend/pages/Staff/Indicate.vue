@@ -11,7 +11,7 @@
                         <v-form @submit.prevent="saveMember">
                             <v-row>
                                 <v-col cols="12" md="6">
-                                    <v-select label="ชื่อหัวข้อ" v-model="form.id_topic" :error-messages="error.id_topic" prepend-inner-icon="mdi-alpha-t" :items="topics.map((t)=>[{title:t.name_topic,value:t.id_topic}])"></v-select>
+                                    <v-select label="ชื่อหัวข้อ" v-model="form.id_topic" :error-messages="error.id_topic" prepend-inner-icon="mdi-alpha-t" :items="topics.map((t)=>({title:t.name_topic,value:t.id_topic}))"></v-select>
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-text-field label="ชื่อตัวชี้วัด" v-model="form.name_indicate" :error-messages="error.name_indicate" prepend-inner-icon="mdi-information"></v-text-field>
@@ -182,7 +182,7 @@ const del = async(id_indicate:number)=>{
 
 
 }
-
+onMounted(fetch)
 </script>
 
 <style scoped>

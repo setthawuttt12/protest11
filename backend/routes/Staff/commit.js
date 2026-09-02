@@ -37,6 +37,8 @@ router.delete('/delete/:id_commit',verifyToken,requireRole('ฝ่ายบุ�
     }
 })
 
+
+
 router.get('/member/:id_eva',verifyToken,requireRole('ฝ่ายบุคลากร'),async (req,res) => {
     try {
         const {id_eva} = req.params
@@ -49,6 +51,20 @@ router.get('/member/:id_eva',verifyToken,requireRole('ฝ่ายบุคล�
         
     }
 })
+
+router.get('/header/:id_eva',verifyToken,requireRole('ฝ่ายบุคลากร'),async (req,res) => {
+    try {
+        const {id_eva} = req.params
+        const [rows] = await db.query(`select * from tb_member m,tb_system s,tb_eva e where e.id_eva = ? and e.id_sys = s.id_sys and e.id_member = m.id_member`,[id_eva])
+
+        res.json(rows[0])
+    } catch (error) {
+        console.error("Error show",error);
+        res.status(500).json({message:"Error show"})
+        
+    }
+})
+
 
 // router.get('/showC',verifyToken,requireRole('ฝ่ายบุคลากร'),async (req,res) => {
 //     try {

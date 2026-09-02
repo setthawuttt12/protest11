@@ -2,7 +2,7 @@
     <v-container>
         <v-row justify="center">
             <v-col cols="12" md="12">
-                <v-card>
+                <v-card class="mb-3">
                     <v-card-title><h1 class="text-center text-h5">ผู้รับการประเมินผล</h1></v-card-title>
                     <v-card-text>
                         <p>ชื่อ-สกุล:{{ header.fname }} {{ header.lname }}</p>
@@ -18,7 +18,7 @@
                         <v-form @submit.prevent="saveMember">
                             <v-row v-for="(c,index) in List" :key="index">
                                 <v-col cols="12" md="6">
-                                    <v-select :label="`กรรมการคนที่:${index+1}`" v-model="c.id_member" prepend-inner-icon="mdi-account" :items="MEMBER(index).map((t)=>[{title:`${t.fullname_commit}`,value:t.id_member}])"></v-select>
+                                    <v-select :label="`กรรมการคนที่:${index+1}`" v-model="c.id_member" prepend-inner-icon="mdi-account" :items="MEMBER(index).map((t)=>({title:`${t.fullname_commit}`,value:t.id_member}))"></v-select>
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-select :label="`ตำแหน่งกรรมการคนที่:${index+1}`" v-model="c.role" :items="ROLE(index)"></v-select>
@@ -161,7 +161,7 @@ const go = async(id_eva:number)=>{
     navigateTo({path:`/Staff/commit-eva-${id_eva}`})
 
 }
-
+onMounted(fetch)
 </script>
 
 <style scoped>

@@ -9,7 +9,6 @@ router.post('/save',verifyToken,requireRole('ฝ่ายบุคลากร')
         
         const {id_topic,name_indicate,detail_indicate,point_indicate,check_indicate} = req.body
         
-        const hash = await bc.hash(password,10)
         const [rows] = await db.query(`insert into tb_indicate(id_topic,name_indicate,detail_indicate,point_indicate,check_indicate) values(?,?,?,?,?)`,[id_topic,name_indicate,detail_indicate,point_indicate,check_indicate])
         res.json(rows,{message:"Save Success"})
     } catch (error) {
@@ -57,7 +56,7 @@ router.delete('/delete/:id_indicate',verifyToken,requireRole('ฝ่ายบุ
 router.get('/show',verifyToken,requireRole('ฝ่ายบุคลากร'),async (req,res) => {
     try {
 
-        const [rows] = await db.query(`select * from tb_topic,tb_indicate order by id_indicate desc`)
+        const [rows] = await db.query(`select * from tb_topic,tb_indicate where tb_topic.id_topic = tb_indicate.id_topic order by id_indicate desc`)
         res.json(rows,{message:"show Success"})
     } catch (error) {
         console.error("Error show",error);

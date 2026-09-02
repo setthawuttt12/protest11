@@ -166,6 +166,7 @@ const del = async(id_sys:number)=>{
 
 
 }
+onMounted(fetch)
 
 </script>
 

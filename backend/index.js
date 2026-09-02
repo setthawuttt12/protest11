@@ -44,6 +44,9 @@ app.use('/api/Commit/save_score',save_score)
 const check_confirm = require('./routes/Commit/check_confirm')
 app.use('/api/Commit/check_confirm',check_confirm)
 
+const sig = require('./routes/commit/signature')
+app.use('/api/Commit/signature',sig)
+
 
 const scorem = require('./routes/Eva/score_member')
 app.use('/api/Eva/score_member',scorem)

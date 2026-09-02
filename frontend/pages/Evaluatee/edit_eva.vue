@@ -51,7 +51,7 @@
 
 <script setup lang="ts">
 import axios from 'axios';
-import { api } from '~/API/base';
+import { api, eva } from '~/API/base';
 
 
 
@@ -86,9 +86,11 @@ function validateForm(){
     if(!f.username.trim())error.value.username = 'กรุณากรอกชื่อผู้ใช้'
     else if(f.username.trim().length < 4)error.value.username = 'ชื่อผู้ใช้ต้องยาวอย่างน้อย 4 ตัวอักษร'
 
-    if(!f.password.trim())error.value.password = 'กรุณากรอกรหัสผ่าน'
-    else if(f.password.trim().length < 6)error.value.password = 'รหัสผ่านต้องยาวอย่างน้อย 4 ตัวอักษร'
-    else if(f.password.trim() != conP.value.trim())error.value.conP = 'รหัสผ่านไม่ตรงกัน'
+    if(!f.password.trim()){
+        if(f.password.trim().length < 6)error.value.password = 'รหัสผ่านต้องยาวอย่างน้อย 4 ตัวอักษร'
+        else if(f.password.trim() != conP.value.trim())error.value.conP = 'รหัสผ่านไม่ตรงกัน'
+    }
+    
 
     if(!f.role.trim())error.value.role = 'กรุณาเลือกประเภทสมาชิก'
 
@@ -96,22 +98,30 @@ function validateForm(){
 }
 
 const saveMember = async()=>{
+    const token = localStorage.getItem('token')
     if(!validateForm())return
-    const formData = new FormData
-    formData.append('pic_user',pic_user.value!)
-    formData.append('form',JSON.stringify(form.value))
-
     try {
 
-        await axios.post(`${api}/auth/regis`,formData)
-        alert('ทำรายการสำเร็จ')
-        navigateTo('/',{replace:true})
+        await axios.put(`${eva}/editeva`,{headers:{Authorization:`Bearer ${token}`}})
+        alert('แก้ไขสำเร็จ')
+        window.location.reload()
 
     } catch (error) {
-        console.error("Error regis");
+        console.error("Error put ");
         
     }
 }
+const fetch = async()=>{
+    const token = localStorage.getItem('token')
+    try {
+        const res = await axios.get(`${eva}/editeva`,{headers:{Authorization:`Bearer ${token}`}})
+        form.value = res.data
+    } catch (error) {
+        console.error("Error get user ");
+    }
+}
+
+onMounted(fetch)
 
 
 </script>

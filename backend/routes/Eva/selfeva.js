@@ -9,7 +9,7 @@ const uploadDir = path.join(__dirname,'../../uploads/evadetil')
 router.get('/user',verifyToken,requireRole('ผู้รับการประเมินผล'),async(req,res)=>{
     try {
         const id_member = req.user.id_member
-        const [rows] = await db.query(`select * from tb_member m,tb_eva e,tb_system s where e.id_member and e.id_member=m.id_member and e.id_sys=s.id_sys order by e.id_eva desc`,[id_member])
+        const [rows] = await db.query(`select * from tb_member m,tb_eva e,tb_system s where e.id_member=? and e.id_member=m.id_member and e.id_sys=s.id_sys order by e.id_eva desc`,[id_member])
         res.json(rows[0])
     } catch (error) {
         console.error('erorr Get user',error)
@@ -46,7 +46,7 @@ router.post('/save',verifyToken,requireRole('ผู้รับการปร�
             await file.mv(path.join(uploadDir,filename))
             fileMap[key] = filename
         }))
-        const [[evaRow]] = await db.query(`select * from tb_member m,tb_eva e,tb_system s where e.id_member and e.id_member=m.id_member and e.id_sys=s.id_sys order by e.id_eva desc`,[id_member])
+        const [[evaRow]] = await db.query(`select * from tb_member m,tb_eva e,tb_system s where e.id_member=? and e.id_member=m.id_member and e.id_sys=s.id_sys order by e.id_eva desc`,[id_member])
         const id_eva = evaRow.id_eva
         for(const item of score){
             const filename = fileMap[item.file_key]

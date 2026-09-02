@@ -9,7 +9,6 @@ router.post('/save',verifyToken,requireRole('ฝ่ายบุคลากร')
         
         const {day_open,day_out,round_sys,year_sys,status_sys} = req.body
         
-        const hash = await bc.hash(password,10)
         const [rows] = await db.query(`insert into tb_system(day_open,day_out,round_sys,year_sys,status_sys) values(?,?,?,?,?)`,[day_open,day_out,round_sys,year_sys,status_sys])
         res.json(rows,{message:"Save Success"})
     } catch (error) {

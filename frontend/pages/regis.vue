@@ -4,7 +4,7 @@
             <v-col cols="12" md="12">
                 <v-card color="#7d0c14">
                     <v-card-title>
-                        <center><v-img class="mt-3" width="25%" src="/img/logo2.png"></v-img></center>
+                        <center><v-img class="mt-3" width="20%" src="/img/logo2.png"></v-img></center>
                         <h1 class="text-h5 text-center">สมัครสมาชิก</h1>
                     </v-card-title>
                     <v-card-text class="bg-white">
@@ -45,8 +45,9 @@
                                 </v-col>
                             </v-row>
                         </v-form>
+                        <nuxt-link to="/" class="text-center text-blue text-decoration"><p>หากมีบัญชีอยู่? เข้าสู่ระบบ</p></nuxt-link>
                     </v-card-text>
-                    <nuxt-link to="/" class="text-center text-blue text-decoration"><p>หากมีบัญชีอยู่? เข้าสู่ระบบ</p></nuxt-link>
+                    
                 </v-card>
             </v-col>
         </v-row>

@@ -4,32 +4,9 @@
             <v-col cols="12" md="12">
                 <v-card>
                     <v-card-title>
-                        <h1 class="text-h5 text-center">จัดการแบบการประเมิน</h1>
+                        <h1 class="text-h5 text-center">สถานะการประเมินของผู้รับการประเมินผล</h1>
                     </v-card-title>
                     <v-card-text>
-                        <br>
-                        <v-form @submit.prevent="saveMember">
-                            <v-row>
-                                <v-col cols="12" md="6">
-                                    <v-select label="ผู้รับการประเมินผล" v-model="form.id_member" :error-messages="error.id_member" prepend-inner-icon="mdi-account" :items="eva.map((t)=>({title:`${t.fname} ${t.lname}`,value:t.id_member}))"></v-select>
-                                </v-col>
-                                <v-col cols="12" md="6">
-                                    <v-select label="รอบการประเมิน" v-model="form.id_sys" :error-messages="error.id_sys" prepend-inner-icon="mdi-clock" :items="round.map((t)=>({title:`รอบการประเมินที่:${t.round_sys} ปี:${t.year_sys}`,value:t.id_sys}))"></v-select>
-                                </v-col>
-                                <v-col cols="12" md="12">
-                                    <v-text-field label="วันที่ออกแบบประเมิน" type="date" v-model="form.day_eva" :error-messages="error.day_eva" prepend-inner-icon="mdi-clock"></v-text-field>
-                                </v-col>
-                                
-                            </v-row>
-                            <v-row>
-                                <v-col cols="12" md="12">
-                                    <center>
-                                        <v-btn class="text-center ma-2" type="submit" color="primary">{{ form.id_eva ? 'อัปเดต':'บันทึก' }}</v-btn>
-                                        <v-btn class="text-center ma-2" @click="reset()" color="error">ยกเลิก</v-btn>
-                                    </center>
-                                </v-col>
-                            </v-row>
-                        </v-form>
                         <v-table class="mt-3 table">
                             <thead>
                                 <tr>
@@ -37,8 +14,8 @@
                                     <th class="border text-center">ผู้รับการประเมินผล</th>
                                     <th class="border text-center">รอบการประเมิน</th>
                                     <th class="border text-center">วันที่ออกแบบประเมิน</th>
-                                    <th class="border text-center">เพิ่มกรรมการ</th>
-                                    <th class="border text-center">จัดการ</th>
+                                    <th class="border text-center">คะแนนที่ได้</th>
+                                    <th class="border text-center">รายละเอียด</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -47,14 +24,9 @@
                                     <td class="border text-center">{{ items.fname}} {{ items.lname }}</td>
                                     <td class="border text-center">รอบการประเมินที่:{{ items.round_sys}} ปี:{{ items.year_sys }}</td>
                                     <td class="border text-center">{{ items.day_eva}}</td>
+                                    <td class="border text-center">{{ items.total_eva || '-' }} คะแนน</td>
                                     <td class="border text-center">
-                                        <v-btn class="text-center text-white ma-2" size="small" color="success" @click="go(items.id_eva)">เพิ่มกรรมการ</v-btn>
-                                    </td>
-                                    <td class="border text-center">
-                                        <center>
-                                            <v-btn class="text-center text-white ma-2" size="small" color="warning" @click="edit(items)">แก้ไข</v-btn>
-                                            <v-btn class="text-center text-white ma-2" size="small" color="error" @click="del(items.id_eva)">ลบ</v-btn>
-                                        </center>
+                                        <v-btn class="text-center text-white ma-2" size="small" color="info" @click="go(items.id_eva)">รายละเอียด</v-btn>
                                     </td>
                                 </tr>
                                 <tr>
@@ -142,28 +114,9 @@ const fetch = async()=>{
 }
 
 
-const edit = (items:any)=>{
-    form.value = {...items}
-}
-
-const del = async(id_eva:number)=>{
-
-    if(!confirm('ต้องการลบข้อมูลชุดนี้ใช่หรือไม่'))return
-    try {
-        await axios.delete(`${staff}/eva/delete/${id_eva}`,{headers:{Authorization:`Bearer ${token}`}})
-        await fetch()
-        await reset()
-    } catch (error) {
-        console.error("Error delete",error);
-        
-    }
-
-
-}
-
 const go = async(id_eva:number)=>{
 
-    navigateTo({path:`/Staff/commit-eva-${id_eva}`})
+    navigateTo({path:`/Staff/score_member-${id_eva}`})
 
 }
 onMounted(fetch)

@@ -54,10 +54,10 @@ const roles =[
     {title:'จัดการตัวชี้วัด',to:'/Staff/Indicate',role:'ฝ่ายบุคลากร'},
     {title:'จัดการรอบการประเมิน',to:'/Staff/Round_eva',role:'ฝ่ายบุคลากร'},
     {title:'จัดการแบบการประเมิน',to:'/Staff/Eva',role:'ฝ่ายบุคลากร'},
-    {title:'สถานะการประเมินของผู้รับการประเมินผล',to:'/Staff/Status_eva',role:'ฝ่ายบุคลากร'},
-    {title:'สถานะการกรรมการประเมิน',to:'/Staff/Status_commit',role:'ฝ่ายบุคลากร'},
     {title:'ผลสรุปการประเมินของผู้รับการประเมินผล',to:'/Staff/Score_EvaList',role:'ฝ่ายบุคลากร'},
     {title:'ผลสรุปการประเมินของผู้รับการประเมินผล',to:'/Staff/Score_CommitList',role:'ฝ่ายบุคลากร'},
+    {title:'สถานะการประเมินของผู้รับการประเมินผล',to:'/Staff/Status_eva',role:'ฝ่ายบุคลากร'},
+    {title:'สถานะการประเมินของกรรมการประเมิน',to:'/Staff/Status_commit',role:'ฝ่ายบุคลากร'},
     {title:'เอกสารหรือคู่มือการประเมิน',to:'/Staff/Document',role:'ฝ่ายบุคลากร'},
     {title:'รายงานผล',to:'/Staff/Report',role:'ฝ่ายบุคลากร'},
 
@@ -105,7 +105,7 @@ const bg = (role)=>{
     .v-app-bar,.v-btn.no-p{
         margin: 0 !important;
         margin-top: 0 !important;
-        display: 0 !important;
+        display: none !important;
         padding: 0 !important;
         width: 100% !important;
     }

@@ -9,8 +9,7 @@ router.post('/save',verifyToken,requireRole('ฝ่ายบุคลากร')
         
         const {id_member,id_sys,day_eva,status_eva} = req.body
         
-        const hash = await bc.hash(password,10)
-        const [rows] = await db.query(`insert into tb_eva(id_member,id_sys,day_eva,status_eva) values(?,?,?,?,?)`,[id_member,id_sys,day_eva,1])
+        const [rows] = await db.query(`insert into tb_eva(id_member,id_sys,day_eva,status_eva) values(?,?,?,?)`,[id_member,id_sys,day_eva,1])
         res.json(rows,{message:"Save Success"})
     } catch (error) {
         console.error("Error save",error);

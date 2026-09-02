@@ -22,6 +22,11 @@ app.use('/api/profile',pf)
 const auth = require('./routes/auth')
 app.use('/api/auth',auth)
 
+//eva
+
+const self = require('./routes/Eva/selfeva')
+app.use('/api/Eva/selfeva',self)
+
 app.use((req,res)=> res.status(404).json({message:'route not found'}))
 app.listen(3001,()=>{
     console.log("Server running on Port 3001");

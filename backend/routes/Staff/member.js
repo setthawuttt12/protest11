@@ -1,48 +1,87 @@
 const express = require('express')
 const bc = require('bcrypt')
 const router = express.Router()
-const db = require('../db')
+const db = require('../../db')
+const {verifyToken,requireRole} = require('../../middleware/authmiddleware')
 
-router.post('/save',async (req,res) => {
+router.post('/save',verifyToken,requireRole('ฝ่ายบุคลากร'),async (req,res) => {
     try {
         
-        const pic_user = req.files?.pic_user
-        const form = JSON.parse(req.body.form)
-
-        let filename = null
-        if (pic_user) {
-            filename = Date.now() + path.extname(pic_user.name)
-            await pic_user.mv(path.join(uploadDir,filename))
-        }
+        const {fname,lname,email,username,password,role} = req.body
+        
         const hash = await bc.hash(form.password,10)
-        const [rows] = await db.query(`insert into tb_member(fname,lname,email,username,password,role,pic_user) values(?,?,?,?,?,?,?)`,[form.fname,form.lname,form.email,form.username,hash,form.role,filename])
-        res.json(rows,{message:"Regis Success"})
+        const [rows] = await db.query(`insert into tb_member(fname,lname,email,username,password,role) values(?,?,?,?,?)`,[fname,lname,email,username,hash,role])
+        res.json(rows,{message:"Save Success"})
     } catch (error) {
-        console.error("Error regis",error);
-        res.status(500).json({message:"Error regis"})
+        console.error("Error save",error);
+        res.status(500).json({message:"Error save"})
         
     }
 })
 
-router.post('/login',async (req,res) => {
+router.put('/update/:id_member',verifyToken,requireRole('ฝ่ายบุคลากร'),async (req,res) => {
     try {
         
-        const {username,password,role} = req.body
-        const [rows] = await db.query(`select * from tb_member where username = ? and role = ?`,[username,role])
-        const m = rows[0]
-        if (!m || !password || !(await bc.compare(password,m.password)) ) {
-            return res.status(403),json({message:"รหัสผ่านไม่ถูกต้อง"})
-        }
-        const token = jwt.sign(
-            {id_member:m.id_member,username:m.username,role:m.role},JWT_SECRET,{expiresIn:'24h'}
-        )
-        res.json({token,role:m.role})
+        const {id_member} = req.params
+        const {fname,lname,email,username,password,role} = req.body
 
+        if(password && password.trim()){
+            const hash = await bc.hash(form.password,10)
+            const [rows] = await db.query(`update tb_member set fname=?,lname=?,email=?,username=?,password=?,role=? where id_member = ?`,[fname,lname,email,username,hash,role,id_member])
+            res.json(rows,{message:"update Success"})
+        }else{
+            const [rows] = await db.query(`update tb_member set fname=?,lname=?,email=?,username=?,role=? where id_member = ?`,[fname,lname,email,username,role,id_member])
+            res.json(rows,{message:"update Success"})
+        }
+        
+        
     } catch (error) {
-        console.error("Error login",error);
-        res.status(500).json({message:"Error login"})
+        console.error("Error update",error);
+        res.status(500).json({message:"Error update"})
         
     }
 })
+
+router.delete('/delete/:id_member',verifyToken,requireRole('ฝ่ายบุคลากร'),async (req,res) => {
+    try {
+        
+        const {id_member} = req.params
+
+
+        const [rows] = await db.query(`delete from tb_member where id_member = ?`,[id_member])
+        res.json(rows,{message:"delete Success"})
+        
+        
+    } catch (error) {
+        console.error("Error delete",error);
+        res.status(500).json({message:"Error delete"})
+        
+    }
+})
+
+router.get('/showE',verifyToken,requireRole('ฝ่ายบุคลากร'),async (req,res) => {
+    try {
+
+        const [rows] = await db.query(`select * from tb_member where role='ผู้รับการประเมินผล' order by id_member desc`)
+        res.json(rows,{message:"showE Success"})
+    } catch (error) {
+        console.error("Error showE",error);
+        res.status(500).json({message:"Error showE"})
+        
+    }
+})
+
+router.get('/showC',verifyToken,requireRole('ฝ่ายบุคลากร'),async (req,res) => {
+    try {
+
+        const [rows] = await db.query(`select * from tb_member where role='กรรมการประเมิน' order by id_member desc`)
+        res.json(rows,{message:"showC Success"})
+    } catch (error) {
+        console.error("Error showC",error);
+        res.status(500).json({message:"Error showC"})
+        
+    }
+})
+
 
 module.exports = router

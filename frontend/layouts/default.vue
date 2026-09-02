@@ -1,0 +1,114 @@
+<template>
+    <v-app>
+        <v-app-bar :color="bg(user.role)"flat>
+            <v-app-bar-nav-icon @click="drawer = !drawer"/>
+            <v-toolbar-title>NTC EVALUATION SYSTEM</v-toolbar-title>
+            <v-spacer/>
+
+            <p class="text-center">ผู้ใช้งาน : {{ user.fname }} {{ user.lname }} <br> {{ user.role }}</p>&nbsp;&nbsp;
+            <v-btn variant="text" icon="mdi-logout" @click="logout"/>
+        </v-app-bar>
+
+        <Client-Only>
+            <v-navigation-drawer app width="260" v-model="drawer" :temporary="isMobile" :permanent="!isMobile">
+                <v-list density="comfortable">
+                    <v-list-title v-for="item in navitem" :key="item.title" :to="item.to">
+                        {{ item.title }}
+                    </v-list-title>
+                </v-list>
+            </v-navigation-drawer>
+        </Client-Only>
+
+        <v-main>
+            <v-container class="pa-2" fluid>
+                <slot/>
+            </v-container>
+            <v-footer class="text-caption justify-center">©2026 NTC EVALUATION SYSTEM   </v-footer>
+        </v-main>
+    </v-app>
+</template>
+
+<script setup lang="ts">
+import axios  from 'axios'
+import { useDisplay } from 'vuetify/lib/composables/display.mjs';
+import { api } from '~/API/base';
+
+const {mdAndDown} = useDisplay()
+const isMobile = computed(()=> mdAndDown.value)
+const drawer = ref(false)
+const user = ref<any>({})
+
+
+const logout = ()=>{
+    if(!confirm('ท่านต้องการออกจากระบบใช่หรือไม่'))return
+    localStorage.removeItem('token')
+    navigateTo('/',{replace:true})
+}
+
+const navitem = computed(()=> roles.filter((item)=> item.role?.includes(user.value.role)))
+const roles =[
+    {title:'หน้าหลัก',to:'/Staff',role:'ฝ่ายบุคลากร'},
+    {title:'จัดการผู้รับการประเมินผล',to:'/Staff/Manage_eva',role:'ฝ่ายบุคลากร'},
+    {title:'จัดการกรรมการประเมิน',to:'/Staff/Manage_commit',role:'ฝ่ายบุคลากร'},
+    {title:'จัดการหัวข้อ',to:'/Staff/Topic',role:'ฝ่ายบุคลากร'},
+    {title:'จัดการตัวชี้วัด',to:'/Staff/Indicate',role:'ฝ่ายบุคลากร'},
+    {title:'จัดการรอบการประเมิน',to:'/Staff/Round_eva',role:'ฝ่ายบุคลากร'},
+    {title:'จัดการแบบการประเมิน',to:'/Staff/Eva',role:'ฝ่ายบุคลากร'},
+    {title:'สถานะการประเมินของผู้รับการประเมินผล',to:'/Staff/Status_eva',role:'ฝ่ายบุคลากร'},
+    {title:'สถานะการกรรมการประเมิน',to:'/Staff/Status_commit',role:'ฝ่ายบุคลากร'},
+    {title:'ผลสรุปการประเมินของผู้รับการประเมินผล',to:'/Staff/Score_EvaList',role:'ฝ่ายบุคลากร'},
+    {title:'ผลสรุปการประเมินของผู้รับการประเมินผล',to:'/Staff/Score_CommitList',role:'ฝ่ายบุคลากร'},
+    {title:'เอกสารหรือคู่มือการประเมิน',to:'/Staff/Document',role:'ฝ่ายบุคลากร'},
+    {title:'รายงานผล',to:'/Staff/Report',role:'ฝ่ายบุคลากร'},
+
+    
+
+    //eva
+    {title:'หน้าหลัก',to:'/Evaluatee',role:'ผู้รับการประเมินผล'},
+    {title:'แก้ไขข้อมูล',to:'/Evaluatee/edit_eva',role:'ผู้รับการประเมินผล'},
+    {title:'แบบประเมินตนเอง',to:'/Evaluatee/selfeva',role:'ผู้รับการประเมินผล'},
+    {title:'ตรวจสอบและยืนยันผล',to:'/Evaluatee/check_score',role:'ผู้รับการประเมินผล'},
+    {title:'รายงานผลการประเมิน',to:'/Evaluatee/Report_eva',role:'ผู้รับการประเมินผล'},
+    {title:'คู่มือแบบการประเมิน',to:'/Evaluatee/Doc',role:'ผู้รับการประเมินผล'},
+
+    //commit
+    {title:'รายชื่อผู้รับการประเมินผล',to:'/Committee',role:'กรรมการประเมิน'},
+    {title:'ดำเนินการประเมิน',to:'/Committee/show_eva',role:'กรรมการประเมิน'},
+    {title:'ตรวจสอบผลการประเมิน',to:'/Committee/check_score',role:'กรรมการประเมิน'},
+    {title:'คู่มือแบบการประเมิน',to:'/Committee/Doc',role:'กรรมการประเมิน'},
+]
+
+const fecth = async()=>{
+    const token = localStorage.getItem('token')
+    if(!token){
+        return navigateTo('/',{replace:true})
+    }
+    try {
+        const res = await axios.get(`${api}/profile`,{headers:{Authorization:`Bearer ${token}`}})
+        user.value = res.data
+    } catch (error) {
+        console.error('Error Get user',error)
+    }
+}
+
+onMounted(fecth)
+
+const bg = (role)=>{
+    if(role === 'ฝ่ายบุคลากร')return '#687647'
+    if(role === 'กรรมการประเมิน')return '#007FFF'
+    if(role === 'ผู้รับการประเมินผล')return '#7d0c14'
+}
+</script>
+
+<style  scoped>
+@media print{
+    .v-app-bar,.v-btn.no-p{
+        margin: 0 !important;
+        margin-top: 0 !important;
+        display: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+
+}
+</style>

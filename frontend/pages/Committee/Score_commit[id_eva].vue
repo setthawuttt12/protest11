@@ -16,14 +16,10 @@
                                     <th class="bg-grey border pa-1" style="width: 10%;">คะแนนที่ได้</th>
                                 </tr>
                                 <tr v-for="indicate in topic.indicates" :key="indicate.id_indicate">
-                                    <td class="border pa-1 text-center" style="width: 10%;">{{ indicate.name_indicate }}
-                                    </td>
-                                    <td class="border pa-1 text-center" style="width: 10%;">{{ indicate.detail_indicate
-                                        }}</td>
-                                    <td class="border pa-1 text-center" style="width: 10%;">{{ indicate.point_indicate
-                                        }}</td>
-                                    <td class="border pa-1 text-center" style="width: 10%;">{{ indicate.point_indicate * 4
-                                        }}</td>
+                                    <td class="border pa-1 text-center" style="width: 10%;">{{ indicate.name_indicate }}</td>
+                                    <td class="border pa-1 text-center" style="width: 10%;">{{ indicate.detail_indicate}}</td>
+                                    <td class="border pa-1 text-center" style="width: 10%;">{{ indicate.point_indicate}}</td>
+                                    <td class="border pa-1 text-center" style="width: 10%;">{{ indicate.point_indicate * 4}}</td>
                                     <td class="border pa-1 text-center" style="width: 10%;">{{
                                         indicate.score_commit*indicate.point_indicate }}</td>
                                 </tr>

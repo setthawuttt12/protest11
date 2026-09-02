@@ -15,14 +15,14 @@
                         <v-form @submit.prevent="login">
                             <v-row>
                                
-                                <v-col cols="12" md="6">
+                                <v-col cols="12" md="12">
                                     <v-text-field label="ชื่อผู้ใช้" v-model="username"  prepend-inner-icon="mdi-account"></v-text-field>
                                 </v-col>
-                                <v-col cols="12" md="6">
+                                <v-col cols="12" md="12">
                                     <v-text-field label="รหัสผ่าน" v-model="password"  :prepend-inner-icon="show ? 'mdi-eye':'mdi-eye-off'" :type="showPw ? 'text':'password'" @click:prepend-inner="show = !show , showPw = !showPw"></v-text-field>
                                 </v-col>
 
-                                <v-col cols="12" md="6">
+                                <v-col cols="12" md="12">
                                     <v-select label="ประเภทสมาชิก" v-model="role"  prepend-inner-icon="mdi-account-group" :items="typeR"></v-select>
                                 </v-col>
 
@@ -36,8 +36,9 @@
                                 </v-col>
                             </v-row>
                         </v-form>
+                        <nuxt-link to="/regis" class="text-center text-blue text-decoration"><p>หากไม่มีบัญชีอยู่? สมัครสมาชิก</p></nuxt-link>
                     </v-card-text>
-                    <nuxt-link to="/regis" class="text-center text-blue text-decoration"><p>หากไม่มีบัญชีอยู่? สมัครสมาชิก</p></nuxt-link>
+                    
                 </v-card>
             </v-col>
         </v-row>

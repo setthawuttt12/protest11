@@ -30,8 +30,20 @@ app.use('/api/dash',dash)
 
 //eva
 
-const self = require('./routes/Eva/selfeva')
-app.use('/api/Eva/selfeva',self)
+
+//commit
+const show_eva = require('./routes/Commit/show_eva')
+app.use('/api/Commit/show_eva',show_eva)
+
+const score_member2 = require('./routes/Commit/score_member')
+app.use('/api/Commit/score_member',score_member2)
+
+const save_score = require('./routes/Commit/save_score')
+app.use('/api/Commit/save_score',save_score)
+
+const check_confirm = require('./routes/Commit/check_confirm')
+app.use('/api/Commit/check_confirm',check_confirm)
+
 
 const scorem = require('./routes/Eva/score_member')
 app.use('/api/Eva/score_member',scorem)

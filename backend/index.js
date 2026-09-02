@@ -63,9 +63,6 @@ app.use('/api/Staff/score_commit',score_commit4)
 
 
 
-//eva
-
-
 //commit
 const show_eva = require('./routes/Commit/show_eva')
 app.use('/api/Commit/show_eva',show_eva)
@@ -82,7 +79,7 @@ app.use('/api/Commit/check_confirm',check_confirm)
 const sig = require('./routes/commit/signature')
 app.use('/api/Commit/signature',sig)
 
-
+//eva
 const scorem = require('./routes/Eva/score_member')
 app.use('/api/Eva/score_member',scorem)
 

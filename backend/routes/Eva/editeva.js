@@ -18,7 +18,7 @@ router.get('/',verifyToken,requireRole('ผู้รับการประเ�
 router.put('/',verifyToken,requireRole('ผู้รับการประเมินผล'),async (req,res) => {
     try {
         const id_member = req.user.id_member
-        const {fname,lname,emile,username,password,role} = req.body
+        const {fname,lname,email,username,password,role} = req.body
         if(password && password.trim()){
             const hash = await bc.hash(password,10)
             await db.query(`update tb_member set fname=?,lname=?,email=?,username=?,password=?,role=? where id_member='${id_member}'`,[fname,lname,email,username,hash,role])

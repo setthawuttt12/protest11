@@ -87,8 +87,9 @@ function validateForm(){
     else if(f.username.trim().length < 4)error.value.username = 'ชื่อผู้ใช้ต้องยาวอย่างน้อย 4 ตัวอักษร'
 
     if(!f.password.trim()){
-        if(f.password.trim().length < 6)error.value.password = 'รหัสผ่านต้องยาวอย่างน้อย 4 ตัวอักษร'
-        else if(f.password.trim() != conP.value.trim())error.value.conP = 'รหัสผ่านไม่ตรงกัน'
+        if(f.password.trim().length < 6)error.value.password = 'รหัสผ่านต้องยาวอย่างน้อย 6 ตัวอักษร'
+        if(!conP.value.trim())error.value.confirmPassword='กรุณายืนยันรหัสผ่าน'
+        else if(conP.value.trim() != f.password.trim())error.value.confirmPassword = 'รหัสผ่านไม่ตรงกัน'
     }
     
 
@@ -102,7 +103,7 @@ const saveMember = async()=>{
     if(!validateForm())return
     try {
 
-        await axios.put(`${eva}/editeva`,{headers:{Authorization:`Bearer ${token}`}})
+        await axios.put(`${eva}/editeva`,form.value,{headers:{Authorization:`Bearer ${token}`}})
         alert('แก้ไขสำเร็จ')
         window.location.reload()
 
